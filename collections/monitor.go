@@ -35,8 +35,8 @@ func Bandwidth(Interfaces string) (rx, tx float64) {
 
 	// rx, tx = (now_rx - last_rx) * 8 / delta_time(t2-t1)
 	delta_time := t2.Sub(t1).Nanoseconds()
-	rx = float64(now_rx-last_rx) * 8 / float64(delta_time) / 1000000000
-	tx = float64(now_tx-last_tx) * 8 / float64(delta_time) / 1000000000
+	rx = (float64(now_rx-last_rx) * 8) / (float64(delta_time) / 1000000000)
+	tx = (float64(now_tx-last_tx) * 8) / (float64(delta_time) / 1000000000)
 
 	return
 

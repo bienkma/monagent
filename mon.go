@@ -49,7 +49,7 @@ func main() {
 		// close define Configuration
 
 
-		t := time.Now().Format("2006-01-02T15:04:05.999999")
+		t := time.Now().Format(time.RFC3339Nano)
 
 		mem_total, mem_usage, mem_cache := collections.Memory()
 		rx, tx := collections.Bandwidth(configuration.Interface)
