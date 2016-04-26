@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/monagent.iml" filepath="$PROJECT_DIR$/monagent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/monagent.iml.back.iml" filepath="$PROJECT_DIR$/monagent.iml.back.iml" />
     </modules>
   </component>
 </project>

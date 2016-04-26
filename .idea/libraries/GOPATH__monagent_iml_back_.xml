@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="GOPATH &lt;monagent&gt;">
+  <library name="GOPATH &lt;monagent.iml.back&gt;">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../../../compress" />
       <root url="file://$PROJECT_DIR$/../../../cmd" />
