@@ -1,7 +1,6 @@
 package collections
 
 import (
-	"fmt"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/net"
@@ -10,7 +9,11 @@ import (
 
 // Function get information interfaces server
 func Network(Interfaces string) (InfoNet net.IOCountersStat) {
-	v, _ := net.IOCounters(true)
+	v, err := net.IOCounters(true)
+	if err != nil{
+		Log(err)
+		panic(err)
+	}
 	// almost every return value is a struct
 	for i := 0; i < len(v); i++ {
 		if v[i].Name == Interfaces {
@@ -44,17 +47,20 @@ func Bandwidth(Interfaces string) (rx, tx float64) {
 
 // Function get information Memory
 func Memory() (uint64, uint64, uint64) {
-	InfoMem, _ := mem.VirtualMemory()
+	InfoMem, err := mem.VirtualMemory()
+	if err != nil{
+		Log(err)
+		panic(err)
+	}
 	return InfoMem.Total, InfoMem.Used, InfoMem.Cached
 }
 
 // Function get information CPU
 func CPU() []float64 {
-	var Err error
 	CPUPercent, Err := cpu.Percent(1*time.Second, false)
-
 	if Err != nil {
-		fmt.Printf("Can't read CPU percent!..")
+		Log(Err)
+		panic(Err)
 	}
 	return CPUPercent
 }
