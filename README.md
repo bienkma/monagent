@@ -12,4 +12,11 @@ go get github.com/bienkma/monagent
 ```
 cd $GOROOT/src/github.com/bienkma/monagent; go build; go install 
 ```
-copy monagent to all server linux. You want to monitor
+3. Pack monagent.
+```
+mkdir monagent; cd monagent
+cp $GOROOT/src/github.com/bienkma/monagen/config.json .
+cp $GOROOT/bin/monagent .
+cd ..; tar -cvzf monagent_v1.0.tar.gz monagent/
+```
+4. move package monagent_v1.0.tar.gz to server you want mon. And fill information in config.json file is correct.
