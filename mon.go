@@ -36,24 +36,35 @@ type host struct {
 
 // The main function
 func main() {
+	// Define configuration file
+	file, err_opening := os.Open("config.json")
+	if err_opening != nil{
+		collections.Log(err_opening)
+		panic(err_opening)
+	}
+	decoder := json.NewDecoder(file)
+	configuration := Configuration{}
+
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		collections.Log(err_opening)
+		panic(err)
+	}
+	// close define Configuration
+	// Create connection
+	client, err := elastic.NewClient(
+		elastic.SetURL(configuration.ElasticURL[0]),
+	)
+	if err != nil {
+		collections.Log(err)
+		panic(err)
+	}
+
 	for {
-		// Define configuration file
-		file, _ := os.Open("config.json")
-		decoder := json.NewDecoder(file)
-		configuration := Configuration{}
-
-		err := decoder.Decode(&configuration)
-		if err != nil {
-			fmt.Println("Error:", err)
-		}
-		// close define Configuration
-
-
 		t := time.Now().Format(time.RFC3339Nano)
-
 		mem_total, mem_usage, mem_cache := collections.Memory()
 		rx, tx := collections.Bandwidth(configuration.Interface)
-
+		// create doc for management host
 		doc := host{
 			HostName:      configuration.HostName,
 			Address:       configuration.Address,
@@ -66,30 +77,20 @@ func main() {
 			BandWidthRec:  rx,
 			BandwidthSent: tx,
 		}
-		fmt.Printf("doc:%v ", doc)
-		// Create connection
-		client, err := elastic.NewClient(
-			elastic.SetURL(configuration.ElasticURL[0]),
-		)
-
-		if err != nil {
-			fmt.Printf("Connection fail!...")
-		}
 
 		// Add document to the index
-		t2 := time.Now()
+		t2 := strconv.FormatInt(time.Now().UnixNano(), 10)
 		_, err = client.Index().
 			Index(configuration.Application).
 			Type(configuration.HostName).
-			Id(strconv.FormatInt(t2.UnixNano(), 10)).
+			Id(t2).
 			BodyJson(doc).
 			Do()
 		if err != nil {
-			fmt.Printf("Error create index")
+			collections.Log(err)
 			panic(err)
 		}
 
-		fmt.Printf("Time: %v \n", strconv.FormatInt(t2.UnixNano(), 10))
-
+		fmt.Printf("Time: %v \n", t2)
 	}
 }
