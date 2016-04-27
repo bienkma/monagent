@@ -39,7 +39,7 @@ func main() {
 	// Define configuration file
 	file, err_opening := os.Open("config.json")
 	if err_opening != nil{
-		collections.Log(err_opening)
+		collections.Log("config.json file not found")
 		panic(err_opening)
 	}
 	decoder := json.NewDecoder(file)
@@ -47,7 +47,7 @@ func main() {
 
 	err := decoder.Decode(&configuration)
 	if err != nil {
-		collections.Log(err_opening)
+		collections.Log("config.json file wrong format!..")
 		panic(err)
 	}
 	// close define Configuration
@@ -56,7 +56,7 @@ func main() {
 		elastic.SetURL(configuration.ElasticURL[0]),
 	)
 	if err != nil {
-		collections.Log(err)
+		collections.Log("Can't connection elasticsearch!...")
 		panic(err)
 	}
 
@@ -87,7 +87,7 @@ func main() {
 			BodyJson(doc).
 			Do()
 		if err != nil {
-			collections.Log(err)
+			collections.Log("Can't create index in elasticsearch. Maybe duplicate index or problem connection elastic server!.. ")
 			panic(err)
 		}
 
