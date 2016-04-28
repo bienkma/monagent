@@ -4,6 +4,6 @@
   "Interface"   :     "eth0",
   "Application" :     "orm",
   "Location"    :     "HLC",
-  "ElasticURL"  :     ["http://192.168.10.111:9200"]
+  "ElasticURL"  :     ["http://192.168.10.111:9200"],
   "Interval"    :     3
 }
