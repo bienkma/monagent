@@ -18,7 +18,7 @@ type Configuration struct {
 	Application string
 	Location    string
 	ElasticURL  []string
-	Interval    uint
+	Interval    time.Duration
 }
 
 // Define struct for doc in elasticsearch

@@ -24,7 +24,7 @@ func Network(Interfaces string) (InfoNet net.IOCountersStat) {
 }
 
 // Function get information Bandwidth
-func Bandwidth(Interval uint, Interfaces string) (rx, tx float64) {
+func Bandwidth(Interval time.Duration, Interfaces string) (rx, tx float64) {
 	// Check rx, tx is fist time
 	t1 := time.Now()
 	last_rx := Network(Interfaces).BytesRecv
@@ -56,7 +56,7 @@ func Memory() (uint64, uint64, uint64) {
 }
 
 // Function get information CPU
-func CPU(Interval uint) []float64 {
+func CPU(Interval time.Duration) []float64 {
 	CPUPercent, Err := cpu.Percent(Interval*time.Second, false)
 	if Err != nil {
 		Log(Err)
