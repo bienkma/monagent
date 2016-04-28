@@ -18,6 +18,7 @@ type Configuration struct {
 	Application string
 	Location    string
 	ElasticURL  []string
+	Interval    uint
 }
 
 // Define struct for doc in elasticsearch
@@ -38,7 +39,7 @@ type host struct {
 func main() {
 	// Define configuration file
 	file, err_opening := os.Open("config.json")
-	if err_opening != nil{
+	if err_opening != nil {
 		collections.Log("config.json file not found")
 		panic(err_opening)
 	}
@@ -63,14 +64,14 @@ func main() {
 	for {
 		t := time.Now().Format(time.RFC3339Nano)
 		mem_total, mem_usage, mem_cache := collections.Memory()
-		rx, tx := collections.Bandwidth(configuration.Interface)
+		rx, tx := collections.Bandwidth(configuration.Interval, configuration.Interface)
 		// create doc for management host
 		doc := host{
 			HostName:      configuration.HostName,
 			Address:       configuration.Address,
 			Timestamp:     t,
 			Location:      configuration.Location,
-			CpuPercent:    collections.CPU()[0],
+			CpuPercent:    collections.CPU(configuration.Interval)[0],
 			MemoryTotal:   mem_total,
 			MemoryUsage:   mem_usage,
 			MemoryCache:   mem_cache,

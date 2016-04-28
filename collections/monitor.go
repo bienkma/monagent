@@ -10,7 +10,7 @@ import (
 // Function get information interfaces server
 func Network(Interfaces string) (InfoNet net.IOCountersStat) {
 	v, err := net.IOCounters(true)
-	if err != nil{
+	if err != nil {
 		Log(err)
 		panic(err)
 	}
@@ -24,14 +24,14 @@ func Network(Interfaces string) (InfoNet net.IOCountersStat) {
 }
 
 // Function get information Bandwidth
-func Bandwidth(Interfaces string) (rx, tx float64) {
+func Bandwidth(Interval uint, Interfaces string) (rx, tx float64) {
 	// Check rx, tx is fist time
 	t1 := time.Now()
 	last_rx := Network(Interfaces).BytesRecv
 	last_tx := Network(Interfaces).BytesSent
 
 	// check rx, tx is second time
-	time.Sleep(1 * time.Second)
+	time.Sleep(Interval * time.Second)
 	t2 := time.Now()
 	now_rx := Network(Interfaces).BytesRecv
 	now_tx := Network(Interfaces).BytesSent
@@ -48,7 +48,7 @@ func Bandwidth(Interfaces string) (rx, tx float64) {
 // Function get information Memory
 func Memory() (uint64, uint64, uint64) {
 	InfoMem, err := mem.VirtualMemory()
-	if err != nil{
+	if err != nil {
 		Log(err)
 		panic(err)
 	}
@@ -56,8 +56,8 @@ func Memory() (uint64, uint64, uint64) {
 }
 
 // Function get information CPU
-func CPU() []float64 {
-	CPUPercent, Err := cpu.Percent(1*time.Second, false)
+func CPU(Interval uint) []float64 {
+	CPUPercent, Err := cpu.Percent(Interval*time.Second, false)
 	if Err != nil {
 		Log(Err)
 		panic(Err)
